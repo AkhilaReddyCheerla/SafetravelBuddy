@@ -28,7 +28,6 @@ function App() {
 
   const API_BASE = "http://localhost:8081";
 
-  // On first load, if token exists, try auto-login -> go to home
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (!token) return;
@@ -49,7 +48,6 @@ function App() {
       });
   }, []);
 
-  // ---------- REGISTER ----------
   const handleRegister = async () => {
     try {
       if (!registerName || !registerEmail || !registerPassword) {
@@ -74,7 +72,6 @@ function App() {
     }
   };
 
-  // ---------- LOGIN ----------
   const handleLogin = async () => {
     try {
       if (!loginEmail || !loginPassword) {
@@ -118,7 +115,6 @@ function App() {
     alert("Logged out.");
   };
 
-  // ---------- PROTECTED API TEST ----------
   const testProtectedApi = async () => {
     try {
       const token = localStorage.getItem("jwtToken");
@@ -141,7 +137,7 @@ function App() {
     }
   };
 
-  // ---------- EMERGENCY SOS (generic) ----------
+  // ---------- EMERGENCY SOS ----------
   const buildAndOpenWhatsApp = (contactPhone) => {
     setLoadingLocation(true);
 
@@ -178,7 +174,6 @@ function App() {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-
             const tripInfo = "Trip info: (source → destination, time).";
 
             const message = `
@@ -220,13 +215,12 @@ Please contact me ASAP.
     buildAndOpenWhatsApp(contact.phone);
   };
 
-  // ---------- RENDER MODES ----------
-
+  // ---------- RENDER SECTIONS ----------
   const renderRegister = () => (
     <div className="card glass card-auth">
-      <h2 className="card-title">📝 Create account</h2>
+      <h2 className="card-title gradient-text">Create your SafeSpace</h2>
       <p className="card-subtitle">
-        Register to use SafeTravelBuddy and protect your journeys.
+        One secure account to keep your journeys and SOS ready anytime.
       </p>
       <div className="form-group">
         <label>Name</label>
@@ -234,7 +228,7 @@ Please contact me ASAP.
           type="text"
           value={registerName}
           onChange={(e) => setRegisterName(e.target.value)}
-          placeholder="Enter name"
+          placeholder="Enter your name"
         />
       </div>
       <div className="form-group">
@@ -243,7 +237,7 @@ Please contact me ASAP.
           type="email"
           value={registerEmail}
           onChange={(e) => setRegisterEmail(e.target.value)}
-          placeholder="Enter email"
+          placeholder="Enter your email"
         />
       </div>
       <div className="form-group">
@@ -252,16 +246,16 @@ Please contact me ASAP.
           type="password"
           value={registerPassword}
           onChange={(e) => setRegisterPassword(e.target.value)}
-          placeholder="Enter password"
+          placeholder="Create a strong password"
         />
       </div>
-      <button className="btn primary-btn" onClick={handleRegister}>
-        Sign up
+      <button className="btn primary-btn wide-btn" onClick={handleRegister}>
+        ✨ Create account
       </button>
       <p className="card-footer-text">
         Already have an account?{" "}
         <span className="link-text" onClick={() => setMode("login")}>
-          Go to Login
+          Login instead
         </span>
       </p>
     </div>
@@ -269,9 +263,9 @@ Please contact me ASAP.
 
   const renderLogin = () => (
     <div className="card glass card-auth">
-      <h2 className="card-title">🔐 Login</h2>
+      <h2 className="card-title gradient-text">Welcome back, guardian</h2>
       <p className="card-subtitle">
-        Login to trigger SOS alerts and manage your safety.
+        Sign in to keep your SOS and trusted contacts just one tap away.
       </p>
       <div className="form-group">
         <label>Email</label>
@@ -279,7 +273,7 @@ Please contact me ASAP.
           type="email"
           value={loginEmail}
           onChange={(e) => setLoginEmail(e.target.value)}
-          placeholder="Enter email"
+          placeholder="Enter your email"
         />
       </div>
       <div className="form-group">
@@ -288,16 +282,16 @@ Please contact me ASAP.
           type="password"
           value={loginPassword}
           onChange={(e) => setLoginPassword(e.target.value)}
-          placeholder="Enter password"
+          placeholder="Enter your password"
         />
       </div>
-      <button className="btn success-btn" onClick={handleLogin}>
-        Login
+      <button className="btn success-btn wide-btn" onClick={handleLogin}>
+        🔓 Login securely
       </button>
       <p className="card-footer-text">
-        Don&apos;t have an account?{" "}
+        New here?{" "}
         <span className="link-text" onClick={() => setMode("register")}>
-          Go to Register
+          Create your account
         </span>
       </p>
     </div>
@@ -309,19 +303,36 @@ Please contact me ASAP.
       <div className="home-main">
         {/* SOS Section */}
         <div className="card glass card-sos">
-          <h2 className="card-title">🚨 Emergency SOS</h2>
-          <p className="card-subtitle">
-            In an emergency, press this button. We will get your location (with
-            your permission), build an SOS message, and open WhatsApp with the
-            message ready to send.
+          <div className="sos-header-row">
+            <div>
+              <h2 className="card-title">Emergency SOS</h2>
+              <p className="card-subtitle">
+                One shining button. One tap. Your location and SOS are ready to send.
+              </p>
+            </div>
+            <div className="sos-status-pill">
+              <span className="status-dot" />
+              SOS ready
+            </div>
+          </div>
+
+          <div className="sos-circle-wrapper">
+            <div className="sos-circle-glow" />
+            <button
+              className={`sos-circle-btn ${loadingLocation ? "disabled" : ""}`}
+              onClick={handleEmergencySOS}
+              disabled={loadingLocation}
+            >
+              <span className="sos-circle-icon">🚨</span>
+              <span className="sos-circle-text">
+                {loadingLocation ? "Preparing..." : "Tap to alert"}
+              </span>
+            </button>
+          </div>
+
+          <p className="sos-small-text">
+            We’ll open WhatsApp with your live location and SOS text ready to send.
           </p>
-          <button
-            className={`btn sos-btn ${loadingLocation ? "disabled" : ""}`}
-            onClick={handleEmergencySOS}
-            disabled={loadingLocation}
-          >
-            {loadingLocation ? "Preparing SOS..." : "🚨 EMERGENCY SOS"}
-          </button>
         </div>
 
         {/* Emergency Contacts Section */}
@@ -330,8 +341,7 @@ Please contact me ASAP.
             👨‍👩‍👧 Quick SOS to Saved Contacts
           </h3>
           <p className="card-subtitle small-subtitle">
-            One tap on a contact sends the same SOS and live location to that
-            person via WhatsApp.
+            Send the same SOS to someone you trust with just one tap.
           </p>
           <div className="contacts-grid">
             {EMERGENCY_CONTACTS.map((c) => (
@@ -343,7 +353,7 @@ Please contact me ASAP.
                 onClick={() => handleEmergencyToContact(c)}
                 disabled={loadingLocation}
               >
-                SOS to {c.name}
+                🚀 SOS to {c.name}
               </button>
             ))}
           </div>
@@ -357,32 +367,35 @@ Please contact me ASAP.
         </div>
       </div>
 
-      {/* Right side: Safety tips */}
+      {/* Right side: Safety tips + quote */}
       <div className="home-side">
         <div className="card glass card-tips">
           <h3 className="card-title small-title">💡 Top 5 Safety Tips</h3>
           <ul className="tips-list">
             <li>
-              Always share your itinerary and SOS contacts with family before
-              you travel.
+              Share your trip and SOS contacts with at least one trusted person.
             </li>
             <li>
-              Keep your phone charged and carry a small power bank for
-              emergencies.
+              Keep your phone charged and carry a small power bank.
             </li>
             <li>
-              Avoid sharing your exact location publicly on social media while
-              you are still there.
+              Avoid posting your exact live location on social media.
             </li>
             <li>
-              Trust your instincts: if a situation feels wrong, leave
-              immediately and alert someone you trust.
+              If something feels wrong, leave and alert someone you trust.
             </li>
             <li>
-              Save local emergency numbers and your hotel/host contact in your
-              phone.
+              Save local emergency numbers before you start your journey.
             </li>
           </ul>
+        </div>
+
+        <div className="card glass card-quote">
+          <p className="quote-text">
+            “Courage is not the absence of fear, it’s moving **with** safety and support
+            beside you.”
+          </p>
+          <p className="quote-tagline">SafeTravelBuddy · Stay aware, stay strong</p>
         </div>
       </div>
     </div>
@@ -390,11 +403,17 @@ Please contact me ASAP.
 
   return (
     <div className="app-root">
+      <div className="bg-glow bg-glow-1" />
+      <div className="bg-glow bg-glow-2" />
+
       {/* HEADER */}
       <div className="app-header">
         <div className="logo-area">
-          <span className="logo-dot" />
-          <h1 className="app-title">🛡️ SafeTravelBuddy</h1>
+          <span className="logo-mark">🛡️</span>
+          <div>
+            <h1 className="app-title">SafeTravelBuddy</h1>
+            <p className="app-subtitle">Premium one-tap SOS for safer journeys</p>
+          </div>
         </div>
         <div className="header-right">
           {isLoggedIn && currentUser ? (
@@ -417,10 +436,10 @@ Please contact me ASAP.
         {mode === "register" && (
           <div className="center-layout">
             <div className="hero-text">
-              <h2>Protect every journey.</h2>
+              <h2 className="hero-heading">Safety is your superpower.</h2>
               <p>
-                SafeTravelBuddy lets you send a live-location SOS to your
-                trusted contacts in just one tap.
+                Build your circle of trust, save your contacts once, and keep an
+                emergency alert ready for every journey.
               </p>
             </div>
             {renderRegister()}
@@ -429,8 +448,11 @@ Please contact me ASAP.
         {mode === "login" && (
           <div className="center-layout">
             <div className="hero-text">
-              <h2>Welcome back.</h2>
-              <p>Login to access your emergency features and stay safer.</p>
+              <h2 className="hero-heading">Welcome back, stay alert.</h2>
+              <p>
+                Sign in and keep your SOS and trusted contacts just one shining
+                button away.
+              </p>
             </div>
             {renderLogin()}
           </div>
