@@ -1,0 +1,14 @@
+com\safetravel\backend\Journey$JourneyBuilder.class
+com\safetravel\backend\JwtAuthFilter.class
+com\safetravel\backend\CustomUserDetailsService.class
+com\safetravel\backend\User$UserBuilder.class
+com\safetravel\backend\AuthController.class
+com\safetravel\backend\JourneyController.class
+com\safetravel\backend\Journey.class
+com\safetravel\backend\User.class
+com\safetravel\backend\UserRepository.class
+com\safetravel\backend\SecurityConfig.class
+com\safetravel\backend\UserController.class
+com\safetravel\backend\JourneyRepository.class
+com\safetravel\backend\JwtService.class
+com\safetravel\backend\SafeTravelBuddyApplication.class
