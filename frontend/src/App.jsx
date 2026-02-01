@@ -4,10 +4,10 @@ import axios from "axios";
 import "./App.css";
 
 const EMERGENCY_CONTACTS = [
-  { name: "Mom", phone: "REMOVED" },
-  { name: "Dad", phone: "REMOVED" },
-  { name: "Sister/Brother", phone: "REMOVED" },
-  { name: "Friend", phone: "REMOVED" },
+  { name: "Mom", phone: "91XXXXXXXX01" },
+  { name: "Dad", phone: "91XXXXXXXX02" },
+  { name: "Sister/Brother", phone: "91XXXXXXXX03" },
+  { name: "Friend", phone: "91XXXXXXXX04" },
 ];
 
 function App() {
